@@ -1,5 +1,6 @@
 package com.project.botapp.models;
 
+import com.project.botapp.constants.SocialNetwork;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,9 +16,11 @@ public class Contact {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private String redSocial;
     private String number;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     private Collection<Message> messages;
+
+    @Enumerated(EnumType.ORDINAL)
+    private SocialNetwork socialNetwork;
 }

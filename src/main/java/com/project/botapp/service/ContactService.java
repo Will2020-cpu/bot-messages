@@ -10,4 +10,5 @@ public interface ContactService {
     Contact editContact(Contact contact);
     List<Contact> getContacts();
     List<Message> getMessagesByContact(Contact contact);
+    Message addMessage(Message message, Long id);
 }
