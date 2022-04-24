@@ -7,10 +7,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -25,5 +25,11 @@ public class ContactResource {
     @GetMapping("/contacts")
     public ResponseEntity<List<Contact>> getContacts(){
         return ResponseEntity.ok(contactService.getContacts());
+    }
+
+    @PostMapping("/contact/add")
+    public ResponseEntity<Contact> addContact(@RequestBody Contact contact){
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/contact/add").toUriString());
+        return ResponseEntity.created(uri).body(contactService.saveContact(contact));
     }
 }

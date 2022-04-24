@@ -1,6 +1,7 @@
 package com.project.botapp.service;
 
 import com.project.botapp.constants.SocialNetwork;
+import com.project.botapp.exception.ConflictException;
 import com.project.botapp.models.Contact;
 import com.project.botapp.models.Message;
 import com.project.botapp.repository.ContactRepo;
@@ -28,7 +29,7 @@ public class ContactServiceImpl  implements ContactService{
     public Contact saveContact(Contact contact) {
         if (contact.getSocialNetwork().getSocial().equalsIgnoreCase(SocialNetwork.WHATSAPP.getSocial()) && contact.getNumber() == null){
             log.info("The number is null");
-            return null;
+            throw new ConflictException();
         }
          return contactRepo.save(contact);
     }
@@ -52,12 +53,12 @@ public class ContactServiceImpl  implements ContactService{
     public Message addMessage(Message message, Long id) {
         if (!contactRepo.existsById(id)){
             log.info("Contacto no existe");
-            return null;
+            throw new ConflictException();
         }
         Contact contact = contactRepo.getById(id);
         log.info("Adding message {} to Contact {}", message.getMessage(), contact.getName());
         if (contact.getSocialNetwork().getSocial().equalsIgnoreCase(SocialNetwork.WHATSAPP.getSocial()) && contact.getNumber() == null){
-            return null;
+            throw new ConflictException();
         }
         messageRepo.save(message);
         contact.getMessages().add(message);
