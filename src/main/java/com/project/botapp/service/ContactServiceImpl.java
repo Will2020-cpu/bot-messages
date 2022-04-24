@@ -2,6 +2,7 @@ package com.project.botapp.service;
 
 import com.project.botapp.constants.SocialNetwork;
 import com.project.botapp.exception.ConflictException;
+import com.project.botapp.exception.NotFoundException;
 import com.project.botapp.models.Contact;
 import com.project.botapp.models.Message;
 import com.project.botapp.repository.ContactRepo;
@@ -35,8 +36,12 @@ public class ContactServiceImpl  implements ContactService{
     }
 
     @Override
-    public Contact editContact(Contact contact) {
-        return null;
+    public Contact editContact(Contact contact, Long id)  {
+        if (!contactRepo.existsById(id)){
+            log.info("Not found contact {}",contact.getName());
+           throw new NotFoundException();
+        }
+        return this.saveContact(contact);
     }
 
     @Override
@@ -50,7 +55,7 @@ public class ContactServiceImpl  implements ContactService{
     }
 
     @Override
-    public Message addMessage(Message message, Long id) {
+    public void addMessage(Message message, Long id) {
         if (!contactRepo.existsById(id)){
             log.info("Contacto no existe");
             throw new ConflictException();
@@ -62,6 +67,5 @@ public class ContactServiceImpl  implements ContactService{
         }
         messageRepo.save(message);
         contact.getMessages().add(message);
-        return message;
     }
 }
