@@ -10,6 +10,6 @@ public interface ContactService {
     Contact saveContact(Contact contact);
     Contact editContact(Contact contact, Long id) throws NotFoundException;
     List<Contact> getContacts();
-    List<Message> getMessagesByContact(Contact contact);
+    List<Message> getMessagesByContact(Long id);
     void addMessage(Message message, Long id);
 }

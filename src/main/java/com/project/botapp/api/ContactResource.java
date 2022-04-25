@@ -47,4 +47,9 @@ public class ContactResource {
         contactService.addMessage(message,id);
         return ResponseEntity.created(uri).build();
     }
+
+    @GetMapping("/contact/messages")
+    public ResponseEntity<List<Message>> getMessagesByContact(@RequestParam("id") Long id){
+        return ResponseEntity.ok(contactService.getMessagesByContact(id));
+    }
 }

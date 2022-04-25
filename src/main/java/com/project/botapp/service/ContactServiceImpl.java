@@ -50,8 +50,11 @@ public class ContactServiceImpl  implements ContactService{
     }
 
     @Override
-    public List<Message> getMessagesByContact(Contact contact) {
-        return null;
+    public List<Message> getMessagesByContact(Long id) {
+        if (!contactRepo.existsById(id)){
+            throw new NotFoundException();
+        }
+        return (List<Message>) contactRepo.getById(id).getMessages();
     }
 
     @Override
